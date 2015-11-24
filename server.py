@@ -17,8 +17,10 @@ class FBSRequestHandler(BaseHTTPRequestHandler):
         if "src" in post_data and "dest" in post_data and "amt" in post_data:
             send_money(int(post_data["src"][0]), int(post_data["dest"][0]), int(post_data["amt"][0]))
             self.send_response(200)
+            self.end_headers()
         else:
             self.send_response(400)
+            self.end_headers()
         return
 
 def init():
