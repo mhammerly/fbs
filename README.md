@@ -7,6 +7,11 @@ state every time the server script is launced, which includes five accounts
 with balances and five without; money will be passed between accounts with
 money and students will redirect transactions into their groups' own account.  
 
+set the `use_https` variable to True at the top of each file to enable ssl. it
+counts on there being a cert at `/root/cert.pem` and a key at `/root/key.pem`
+which you can generate and self-sign with this command:
+`openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 30`  
+
 there is a rolling code mechanism that will prevent replay attacks from
 happening. when a valid transaction from some source is sent to the server, its
 transaction number is incremented in the database, and when the client receives

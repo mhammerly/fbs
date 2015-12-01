@@ -2,8 +2,10 @@ import sqlite3
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib
 import hashlib
+import ssl
 
 db = '/home/matt/825/mitm/fbs.db'
+use_https = False
 
 def validate_transaction(post_data):
     conn = sqlite3.connect(db)
@@ -101,6 +103,12 @@ def main():
     init()
     server_address = ("", 9999)
     httpd = HTTPServer(server_address, FBSRequestHandler)
+    if use_https:
+        httpd.socket = ssl.wrap_socket(httpd.socket,
+                                       server_side=True,
+                                       certfile="/root/cert.pem",
+                                       keyfile="/root/key.pem",
+                                       ssl_version=ssl.PROTOCOL_TLSv1)
     httpd.serve_forever()
 
 
