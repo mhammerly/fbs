@@ -11,11 +11,31 @@ def validate_transaction(post_data):
     c.execute("SELECT transfer_number FROM balances WHERE account=?", (post_data["src"][0],))
     transfer_number = c.fetchone()
     t = hashlib.md5(bytes(str(transfer_number[0]) + ":" + post_data["src"][0], "ASCII")).hexdigest()
+
+    c.close()
+    conn.close()
     return t == post_data["t"][0]
+
+def get_balance(acct):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    c.execute("SELECT balance FROM balances WHERE account=?", (acct,))
+    balance = c.fetchone()[0]
+
+    c.close()
+    conn.close()
+    return balance
+    
 
 class FBSRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
+        self.end_headers()
+        resource, _, query = self.path.partition("?")
+        query_params = urllib.parse.parse_qs(query)
+        acct = query_params['acct'][0]
+        balance = get_balance(acct)
+        self.wfile.write(bytes(str(balance), "ASCII"))
         return
 
     def do_POST(self):
