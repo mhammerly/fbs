@@ -15,11 +15,11 @@ accts = {'10.1.1.1':10293,
 # server_host = ("https" if use_https else "http") + '://10.1.1.5:9999'
 server_host = ("https" if use_https else "http") + '://127.0.0.1:9999'
 
-# f = os.popen('ifconfig eth1 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
-# ip = f.read()[:-1]
-# f.close()
+f = os.popen('ifconfig eth1 | grep "inet\ addr" | cut -d: -f2 | cut -d" " -f1')
+ip = f.read()[:-1]
+f.close()
 
-ip = '10.1.1.1'
+# ip = '10.1.1.1'
 
 def main(args):
     if len(args) != 3:

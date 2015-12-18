@@ -14,8 +14,8 @@ accts = {'grp1': 19001,
 server_host = ("https" if use_https else "http") + '://127.0.0.1:9999'
 
 def main():
-    # user = os.getlogin()
-    user = 'grp1'
+    user = os.getlogin()
+    # user = 'grp1'
     acct = accts[user]
     url = server_host + "?acct=" + str(acct)
     response = urlopen(url)
